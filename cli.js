@@ -19,9 +19,15 @@ if (args.h) {
 }
 
 const timezone = args.z ?? moment.tz.guess();
+let longitude = 0;
+let latitude = 0;
 
-const longitude = args.e || args.w * -1;
-const latitude = args.n || args.s * -1;
+if (args.e || args.w) {
+longitude = args.e || args.w * -1;
+}
+if (args.n || args.s) {
+  latitude = args.n || args.s * -1;
+}
 
 // Make a request
 const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + latitude + '&longitude=' + longitude + '&daily=precipitation_hours&current_weather=true&timezone=' + timezone);
@@ -40,8 +46,7 @@ let result = ""
 
 if (data.daily.precipitation_hours[days] > 0) {
   result += "You might need your galoshes "
-}
-else {
+} else {
   result += "You will not need your galoshes "
 }
 
